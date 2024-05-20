@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_data>
+	<SuccessTMV>
+		<request>
+			{	"serviceID" : "0909722925",
+				"pageNo" : 1,
+				"pageSize" : 50
+			}
+		</request>
+		<response>
+			{
+			    "code": "0",
+			    "msg": "Success",
+			    "transID": "aafb0617-903b-4d85-a7b5-b2c1a12de9ec",
+			    "assetBeanList": [
+			        {
+			            "assetRowID": "1-1AJT3G4T",
+			            "assetNo": "CMH55672179",
+			            "customerRowID": "1-XT-303",
+			            "billingRowID": "1-1AJSXGXV",
+			            "serviceID": "0909722925",
+			            "preferLanguage": "THA",
+			            "sourceSystem": "CCBS",
+			            "billingAccountBean": {
+			                "accountRowID": "1-1AJSXGXV",
+			                "accountType": "Individual",
+			                "ban": "229106374",
+			                "cvgBan": "781590185",
+			                "companyCode": "RM",
+			                "ccbsOuID": "73235532",
+			                "title": "นางสาว",
+			                "firstName": "ฐิตาภา",
+			                "lastName": "อินทรอักษร",
+			                "organizationName": "นางสาว ฐิตาภา อินทรอักษร"
+			            },
+			            "customerNameBean": {
+			                "accountRowID": "1-XT-303",
+			                "organizationName": "ฐิตาภา อินทรอักษร"
+			            },
+			            "subscriberNameBean": {
+			                "title": "นางสาว",
+			                "firstName": "ฐิตาภา",
+			                "lastName": "อินทรอักษร"
+			            },
+			            "productBean": {
+			                "productRowID": "1-CES-2857",
+			                "productName": "Mobile Postpay",
+			                "productPartNo": "Mobile Postpay",
+			                "productLine": "True Mobile",
+			                "productType": "Postpay",
+			                "productCategory": "External"
+			            },
+			            "startDate": "2017-04-10T18:36:10.000+0700",
+			            "status": "Active",
+			            "mostUsage": "กรุงเทพมหานคร",
+			            "ccbsSubscriberID": "55672179",
+			            "dealerCode": "80000411",
+			            "createdDate": "2017-04-10T18:46:05.000+0700",
+			            "createdBy": "1-EUVE",
+			            "lastUpdatedDate": "2019-07-26T04:23:59.000+0700",
+			            "lastUpdatedBy": "1-EUVE",
+			            "assetLifeTime": "2 years 3 months 20 days"
+			        },
+			        {
+			            "assetRowID": "1-CH37-3845",
+			            "assetNo": "CMH16828099",
+			            "customerRowID": "1-XT-303",
+			            "billingRowID": "1-CE64-4269",
+			            "serviceID": "0909722925",
+			            "preferLanguage": "THA",
+			            "sourceSystem": "CCBS",
+			            "billingAccountBean": {
+			                "accountRowID": "1-CE64-4269",
+			                "accountType": "Individual",
+			                "ban": "19702598",
+			                "cvgBan": "8779966",
+			                "companyCode": "RM",
+			                "ccbsOuID": "19736220",
+			                "title": "คุณ",
+			                "firstName": "ฐิตาภา",
+			                "lastName": "อินทรอักษร",
+			                "organizationName": "คุณ ฐิตาภา อินทรอักษร"
+			            },
+			            "customerNameBean": {
+			                "accountRowID": "1-XT-303",
+			                "organizationName": "ฐิตาภา อินทรอักษร"
+			            },
+			            "subscriberNameBean": {},
+			            "productBean": {
+			                "productRowID": "1-CES-2857",
+			                "productName": "Mobile Postpay",
+			                "productPartNo": "Mobile Postpay",
+			                "productLine": "True Mobile",
+			                "productType": "Postpay",
+			                "productCategory": "External"
+			            },
+			            "startDate": "2012-05-07T19:27:45.000+0700",
+			            "endDate": "2014-02-24T10:44:21.000+0700",
+			            "status": "Inactive",
+			            "ccbsSubscriberID": "16828099",
+			            "disconnectType": "ไม่มีความจำเป็นต้องใช้แล้ว",
+			            "createdDate": "2014-10-20T23:29:00.000+0700",
+			            "createdBy": "1-B28E5",
+			            "lastUpdatedDate": "2017-06-29T03:03:22.000+0700",
+			            "lastUpdatedBy": "1-B28E5",
+			            "assetLifeTime": "7 years 2 months 23 days"
+			        },
+			        {
+			            "assetRowID": "1-N7X3ODB",
+			            "assetNo": "CMH28513186",
+			            "customerRowID": "1-54C-5393",
+			            "billingRowID": "1-N7X1CEL",
+			            "serviceID": "0909722925",
+			            "preferLanguage": "THA",
+			            "sourceSystem": "CCBS",
+			            "billingAccountBean": {
+			                "accountRowID": "1-N7X1CEL",
+			                "accountType": "Individual",
+			                "ban": "25887275",
+			                "cvgBan": "74892568",
+			                "companyCode": "RM",
+			                "ccbsOuID": "37959376",
+			                "title": "นางสาว",
+			                "firstName": "จิตสุภา",
+			                "lastName": "จันทร์งาม",
+			                "organizationName": "นางสาว จิตสุภา จันทร์งาม"
+			            },
+			            "customerNameBean": {
+			                "accountRowID": "1-54C-5393",
+			                "organizationName": "จิตสุภา จันทร์งาม"
+			            },
+			            "subscriberNameBean": {
+			                "title": "นางสาว",
+			                "firstName": "จิตสุภา",
+			                "lastName": "จันทร์งาม"
+			            },
+			            "productBean": {
+			                "productRowID": "1-CES-2857",
+			                "productName": "Mobile Postpay",
+			                "productPartNo": "Mobile Postpay",
+			                "productLine": "True Mobile",
+			                "productType": "Postpay",
+			                "productCategory": "External"
+			            },
+			            "startDate": "2016-04-09T14:00:52.000+0700",
+			            "endDate": "2017-04-10T18:36:08.000+0700",
+			            "status": "Inactive",
+			            "mostUsage": "กรุงเทพมหานคร",
+			            "ccbsSubscriberID": "28513186",
+			            "dealerCode": "80000084",
+			            "createdDate": "2016-04-09T14:19:51.000+0700",
+			            "createdBy": "1-EUVE",
+			            "lastUpdatedDate": "2017-06-30T00:49:15.000+0700",
+			            "lastUpdatedBy": "1-B28E5",
+			            "assetLifeTime": "3 years 3 months 21 days"
+			        },
+			        {
+			            "assetRowID": "1-4DW44KU",
+			            "assetNo": "CMH19257465",
+			            "customerRowID": "1-XT-303",
+			            "billingRowID": "1-4DW44JK",
+			            "serviceID": "0909722925",
+			            "preferLanguage": "THA",
+			            "sourceSystem": "CCBS",
+			            "billingAccountBean": {
+			                "accountRowID": "1-4DW44JK",
+			                "accountType": "Individual",
+			                "ban": "21544753",
+			                "cvgBan": "70641802",
+			                "companyCode": "RM",
+			                "ccbsOuID": "25716372",
+			                "title": "คุณ",
+			                "firstName": "ฐิตาภา",
+			                "lastName": "อินทรอักษร",
+			                "organizationName": "คุณ ฐิตาภา อินทรอักษร"
+			            },
+			            "customerNameBean": {
+			                "accountRowID": "1-XT-303",
+			                "organizationName": "ฐิตาภา อินทรอักษร"
+			            },
+			            "subscriberNameBean": {},
+			            "productBean": {
+			                "productRowID": "1-CES-2857",
+			                "productName": "Mobile Postpay",
+			                "productPartNo": "Mobile Postpay",
+			                "productLine": "True Mobile",
+			                "productType": "Postpay",
+			                "productCategory": "External"
+			            },
+			            "startDate": "2014-11-28T21:08:25.000+0700",
+			            "status": "Inactive",
+			            "ccbsSubscriberID": "19257465",
+			            "createdDate": "2014-12-02T09:12:57.000+0700",
+			            "createdBy": "1-EUVE",
+			            "lastUpdatedDate": "2019-07-19T03:09:42.000+0700",
+			            "lastUpdatedBy": "1-J68BH",
+			            "assetLifeTime": "4 years 8 months 2 days"
+			        },
+			        {
+			            "assetRowID": "1-9IHGBBR",
+			            "assetNo": "CMH21369795",
+			            "customerRowID": "1-XT-303",
+			            "billingRowID": "1-9IHEB0R",
+			            "serviceID": "0909722925",
+			            "preferLanguage": "THA",
+			            "sourceSystem": "CCBS",
+			            "billingAccountBean": {
+			                "accountRowID": "1-9IHEB0R",
+			                "accountType": "Individual",
+			                "ban": "22562476",
+			                "cvgBan": "71605081",
+			                "companyCode": "RM",
+			                "ccbsOuID": "28473887",
+			                "title": "คุณ",
+			                "firstName": "ฐิตาภา",
+			                "lastName": "อินทรอักษร",
+			                "organizationName": "คุณ ฐิตาภา อินทรอักษร"
+			            },
+			            "customerNameBean": {
+			                "accountRowID": "1-XT-303",
+			                "organizationName": "ฐิตาภา อินทรอักษร"
+			            },
+			            "subscriberNameBean": {},
+			            "productBean": {
+			                "productRowID": "1-CES-2857",
+			                "productName": "Mobile Postpay",
+			                "productPartNo": "Mobile Postpay",
+			                "productLine": "True Mobile",
+			                "productType": "Postpay",
+			                "productCategory": "External"
+			            },
+			            "startDate": "2015-05-15T15:14:24.000+0700",
+			            "endDate": "2016-04-09T14:00:49.000+0700",
+			            "status": "Inactive",
+			            "mostUsage": "กรุงเทพมหานคร",
+			            "ccbsSubscriberID": "21369795",
+			            "createdDate": "2015-05-15T15:23:59.000+0700",
+			            "createdBy": "1-EUVE",
+			            "lastUpdatedDate": "2017-06-29T04:35:44.000+0700",
+			            "lastUpdatedBy": "1-B28E5",
+			            "assetLifeTime": "4 years 2 months 15 days"
+			        }
+			    ],
+			    "totalRecords": 5
+			}
+		</response>
+	</SuccessTMV>
+	
+	<SuccessTOL>
+		<request>
+			{
+				"serviceID": "NF0219095I",
+				"pageNo": "1",
+				"pageSize": "10"
+			}
+		</request>
+		<response>
+			{
+			    "code": "0",
+			    "msg": "Success",
+			    "transID": "693255a9-acc5-485c-8ec9-18ed8f22c9c3",
+			    "assetBeanList": [
+			        {
+			            "assetRowID": "1-15W7WN4M",
+			            "assetNo": "1-2IOO5N1NF0219095I",
+			            "customerRowID": "1-2WW-191",
+			            "billingRowID": "1-15P69Z0F",
+			            "serviceID": "NF0219095I",
+			            "sourceSystem": "CCBS",
+			            "billingAccountBean": {
+			                "accountRowID": "1-15P69Z0F",
+			                "accountType": "Individual",
+			                "ban": "202506485",
+			                "cvgBan": "832114431",
+			                "companyCode": "TI",
+			                "ccbsOuID": "50846882",
+			                "title": "นาย",
+			                "firstName": "วรัญญู",
+			                "lastName": "รังสิพราหมณกุล",
+			                "organizationName": "นาย วรัญญู รังสิพราหมณกุล"
+			            },
+			            "customerNameBean": {
+			                "accountRowID": "1-2WW-191",
+			                "organizationName": "วรัญญู รังสิพราหมณกุล"
+			            },
+			            "subscriberNameBean": {
+			                "title": "นาย",
+			                "firstName": "วรัญญู",
+			                "lastName": "รังสิพราหมณกุล"
+			            },
+			            "installationAddress": {
+			                "addressRowID": "1-15W7WN4Q",
+			                "houseNo": "292/693",
+			                "floor": "16",
+			                "building": "THE NICH RATCHAVIPHA B",
+			                "street": "รัชดาภิเษก",
+			                "district": "จตุจักร",
+			                "subdistrict": "ลาดยาว",
+			                "province": "กรุงเทพมหานคร",
+			                "postalCode": "10900",
+			                "country": "Thailand",
+			                "latitude": "13.830769",
+			                "longitude": "100.540289"
+			            },
+			            "productBean": {
+			                "productRowID": "1-W3AAMZZ",
+			                "productName": "CCBS - Internet - Hi - Speed Unlimited Non Facility Service",
+			                "productPartNo": "1-18VO3YF",
+			                "productLine": "True Online",
+			                "productType": "ADSL Non Fac",
+			                "productCategory": "External"
+			            },
+			            "startDate": "2017-01-29T00:00:00.000+0700",
+			            "status": "Active",
+			            "qrunAddressID": "62792873",
+			            "ccbsSubscriberID": "38988344",
+			            "dealerCode": "70000295",
+			            "createdDate": "2017-01-29T17:36:45.000+0700",
+			            "createdBy": "1-EUUK",
+			            "lastUpdatedDate": "2019-05-08T10:09:30.000+0700",
+			            "lastUpdatedBy": "1-1P8QXOB",
+			            "specialNote": ".",
+			            "assetLifeTime": "2 years 6 months 1 days"
+			        }
+			    ],
+			    "totalRecords": 1
+			}
+		</response>
+	</SuccessTOL>
+	
+	<FailNotFound>
+		<request>
+			{	"serviceID" : "abcd123",
+				"pageNo" : 1,
+				"pageSize" : 50
+			}
+		</request>
+		<response>
+			{	"code": "CIBASA2010004",
+	    		"msg": "[CIBASA2010004] [NOT_FOUND_CODE] [Data AssetRoot not found in CRM system.]",
+	   	 		"transID": "83c89a19-90e7-4fa4-9e2e-3d4aa746199d"
+			}
+		</response>
+	</FailNotFound>
+	
+	<FailRequiredField>
+		<request>
+			{	"pageNo" : 1,
+				"pageSize" : 50
+			}
+		</request>
+		<response>
+			{	"code": "CIBASB1010002",
+			    "msg": "[CIBASB1010002] [REQUIRED_CODE] [Parameter AssetRowID, ServiceID, Ban or CvgBan is required.]",
+			    "transID": "19a2ada6-4e8b-40d0-8622-2495286810f8"
+			}
+		</response>
+	</FailRequiredField>
+</test_data>

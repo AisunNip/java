@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {APPLICATION_NAME}
+  labels:
+    # app: application name
+    app: {APPLICATION_NAME}
+    # env: uat2, uat3, uat4, uat5, uat6, uat7, prod1, prod2 
+    env: {ENVIRONMENT}
+    version: {VERSION}
+    # tier: frontend, backend, cache
+    tier: {TIER}
+    deploymentDate: {DEPLOYMENT_DATE}
+spec:
+  # replica set
+  replicas: {NO_OF_REPLICAS}
+  selector: 
+    matchLabels:
+      app: {APPLICATION_NAME}
+      env: {ENVIRONMENT}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # maxSurge : the maximum number of Pods that can be created over the desired number of Pods.
+      maxSurge: 1
+      # maxUnavailable : maximum number of Pods that can be unavailable during the update process
+      maxUnavailable: 0
+  template:
+    metadata:
+      # label of pod
+      labels:
+        app: {APPLICATION_NAME}
+        env: {ENVIRONMENT}
+        version: {VERSION}
+        tier: {TIER}
+        deploymentDate: {DEPLOYMENT_DATE}
+    spec:
+      # spec of pod
+      containers:
+      - name: {APPLICATION_NAME}
+        image: reghbpr01.dc1.true.th/crm-iwd/{IMAGE_NAME}:{IMAGE_TAG}
+        imagePullPolicy: Always
+        # resource per pod
+        resources:
+          limits:
+            cpu: "1"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+        # Define an environment variable for a container
+        env:
+        - name: spring.profiles.active
+          value: "{ENVIRONMENT}"
+        - name: cassandra.member
+          value: "{CASSANDRA_MEMBER}"
+        - name: cassandra.port
+          value: "{CASSANDRA_PORT}"
+        - name: cassandra.keyspace
+          value: "{CASSANDRA_KEYSPACE}"
+        - name: cassandra.user
+          value: "{CASSANDRA_USER}"
+        - name: cassandra.pass
+          value: "{CASSANDRA_PASS}"
+        ports:
+        - containerPort: {APPLICATION_PORT_NO}
+        # The initialDelaySeconds field tells the kubelet that it should wait XX second before performing the first probe.
+        # The timeoutSeconds field tell Number of seconds after which the probe times out. Defaults to XX second.
+        # The periodSeconds field specifies that the kubelet should perform a liveness probe every XX seconds.
+        readinessProbe:
+          httpGet:
+            path: {KUBE_PROBE_URI}
+            port: {APPLICATION_PORT_NO}
+          initialDelaySeconds: 40
+          timeoutSeconds: 8
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: {KUBE_PROBE_URI}
+            port: {APPLICATION_PORT_NO}
+          initialDelaySeconds: 40
+          timeoutSeconds: 8
+          periodSeconds: 10
+      imagePullSecrets:
+      - name: ccsd-iwd-sa-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {APPLICATION_NAME}
+  labels:
+    app: {APPLICATION_NAME}
+    env: {ENVIRONMENT}
+    version: {VERSION}
+    tier: {TIER}
+spec:
+  ports:
+  - port: {APPLICATION_PORT_NO}
+    # targetPort point to Deployment (containerPort)
+    targetPort: {APPLICATION_PORT_NO}
+  selector:
+    # point to Deployment by labels
+    app: {APPLICATION_NAME}
+    env: {ENVIRONMENT}
+  type: ClusterIP
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {APPLICATION_NAME}
+spec:
+  rules:
+  - host: {APPLICATION_NAME}.{KUBE_NAMESPACE}.{KUBE_CLUSTER_NAME}.true.th
+    http:
+      paths:
+        - backend:
+            serviceName: {APPLICATION_NAME}
+            servicePort: {APPLICATION_PORT_NO}
+          path: /

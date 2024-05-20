@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+		<Console name="AppLog" target="SYSTEM_OUT"></Console>
+		<Console name="SpringBootLog" target="SYSTEM_OUT">
+			<JsonLayout complete="false" compact="true" eventEol="true">
+				<KeyValuePair key="@timestamp" value="$${date:yyyy-MM-dd'T'HH:mm:ss.SSSZ}" />
+				<KeyValuePair key="@suffix" value="CRMIAsset" />
+				<KeyValuePair key="logType" value="Serverlog" />
+			</JsonLayout>
+		</Console>
+		
+		<!-- 
+		<File name="AppLog" fileName="D:/CRMIAsset.log"></File>
+		<File name="SpringBootLog" fileName="D:/SpringBoot.log">
+			<JsonLayout complete="false" compact="true" eventEol="true">
+				<KeyValuePair key="@timestamp" value="${date:yyyy-MM-dd'T'HH:mm:ss.SSSZ}" />
+				<KeyValuePair key="logType" value="Serverlog" />
+			</JsonLayout>
+		</File>
+		-->
+	</Appenders>
+
+	<Loggers>
+		<!-- Log everything in custom package -->
+		<Logger name="th.co.truecorp.crmdev.asset" level="debug" additivity="false">
+			<AppenderRef ref="AppLog" />
+		</Logger>
+
+		<!-- Log everything in Spring Boot -->
+		<Logger name="org.springframework.boot" level="off" additivity="false">
+			<AppenderRef ref="SpringBootLog" />
+		</Logger>
+
+		<!-- Log everything in Spring Core -->
+		<Logger name="org.springframework.core" level="off" additivity="false">
+			<AppenderRef ref="SpringBootLog" />
+		</Logger>
+
+		<!-- Log HikariPool connection pool -->
+		<Logger name="com.zaxxer.hikari" level="debug" additivity="false">
+			<AppenderRef ref="SpringBootLog" />
+		</Logger>
+		
+		<!--  
+		<Root level="error">
+			<AppenderRef ref="AppLog" />
+			<AppenderRef ref="SpringBootLog" />
+		</Root>
+		-->
+	</Loggers>
+</Configuration>

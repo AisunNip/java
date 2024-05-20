@@ -1,0 +1,231 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>th.co.truecorp.crmdev.asset</groupId>
+	<artifactId>CRMIAsset</artifactId>
+	<version>23.5.18</version>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<datastax.cassandra.version>3.11.3</datastax.cassandra.version>
+		<repo.manager.url>http://172.16.2.214:8081/repository</repo.manager.url>
+		<junit.version>4.12</junit.version>
+		<hamcrest.version>2.2</hamcrest.version>
+	</properties>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.11</version>
+		<relativePath/>
+		<!-- 
+		To skip the local file search and directly search the parent POM in Maven repositories
+		, we need to explicitly set the relativePath to an empty value
+		-->
+	</parent>
+
+	<dependencies>
+		<!-- Add typical dependencies for a web application -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.tomcat</groupId>
+					<artifactId>tomcat-jdbc</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- A driver for Apache Cassandra(R) 2.1+ that works exclusively with the Cassandra Query Language version 3 (CQL3) 
+			and Cassandra's native protocol versions 3 and above. -->
+		<dependency>
+			<groupId>com.datastax.cassandra</groupId>
+			<artifactId>cassandra-driver-core</artifactId>
+			<version>${datastax.cassandra.version}</version>
+		</dependency>
+		<!-- Object mapper for the DataStax CQL Java Driver. -->
+		<dependency>
+			<groupId>com.datastax.cassandra</groupId>
+			<artifactId>cassandra-driver-mapping</artifactId>
+			<version>${datastax.cassandra.version}</version>
+		</dependency>
+		
+		<!-- JDBC Connection Pool -->
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.mariadb.jdbc</groupId>
+		    <artifactId>mariadb-java-client</artifactId>
+		    <version>2.6.2</version>
+		</dependency>
+		
+		<!-- JDBC Oracle -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>th.co.truecorp.crmdev.util.crypto</groupId>
+			<artifactId>crm-util-crypto</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>th.co.truecorp.crmdev.util.common</groupId>
+			<artifactId>crm-util-common</artifactId>
+			<version>2.4.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>th.co.truecorp.crmdev.util.logging</groupId>
+			<artifactId>crm-util-logging</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>th.co.truecorp.crmdev.util.net</groupId>
+			<artifactId>crm-util-network</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>th.co.truecorp.crmdev.util.db</groupId>
+			<artifactId>crm-util-db</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
+		<!-- JUnit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hamcrest</groupId>
+					<artifactId>hamcrest-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-library</artifactId>
+			<version>${hamcrest.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20180813</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- Package as an executable jar -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			
+			<!-- SonarQube Scanner for Maven
+				mvn sonar:sonar -Dsonar.host.url=http://172.16.2.157:9000/sonar -Dsonar.login=0ad2a0656899da24321b1506c5fe88792f69da54
+			-->
+			<plugin>
+            	<groupId>org.sonarsource.scanner.maven</groupId>
+            	<artifactId>sonar-maven-plugin</artifactId>
+              	<version>3.6.1.1688</version>
+            </plugin>
+            
+            <!-- 
+            	https://www.jacoco.org 
+            	generate a code coverage report
+            -->
+            <plugin>
+            	<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.5</version>
+		    	<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<!-- attached to Maven test phase -->
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+            </plugin>
+		</plugins>
+	</build>
+	
+	<distributionManagement>
+		<repository>
+			<id>TrueIT-Repo</id>
+			<url>${repo.manager.url}/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>TrueIT-Repo-Snapshots</id>
+			<url>${repo.manager.url}/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>

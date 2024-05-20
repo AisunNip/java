@@ -1,0 +1,181 @@
+#!groovy
+
+// ENVIRONMENT = uat2 | uat3 | uat4 | uat5 | uat7 | prod1 | prod2
+def ENVIRONMENT = 'prod1'
+def CASSANDRA_MEMBER = ''
+def CASSANDRA_PORT = '9042'
+def CASSANDRA_KEYSPACE = 'crm_adapter'
+def CASSANDRA_USER = 'crmuser'
+
+def CASSANDRA_PASS = 'Sep@crm'
+def GIT_URL = 'https://gitlab.com/true-itsd/crm/crm-adapter.git'
+def GIT_BRANCH = 'origin/develop'
+def PROJECT_DIR = 'CRMIAsset'
+
+// Harbor Server
+def DOCKER_REPO_PATH = "${DOCKER_REPO_SERVER}/crm-iwd/"
+def IMAGE_NAME = 'crmiasset'
+
+// Kubernete
+def KUBE_NAMESPACE = 'crmapi'
+def KUBE_APPLICATION_PORT_NO = '80'
+def KUBE_PROBE_URI = '\\/CRMIAsset\\/monitoring'
+
+// KUBE_TIER = frontend | backend | cache
+def KUBE_TIER = 'backend'
+def KUBE_NO_OF_REPLICAS = '6'
+
+def POM_FILE = null
+
+pipeline {
+	agent any
+	
+	tools {
+    	maven 'apache-maven-3.5.4'
+    	jdk 'jdk1.8.0_131'
+  	}
+  
+	stages {
+		stage('Checkout SCM') {
+			steps {
+	            checkout([$class: 'GitSCM'
+	            	, branches: [[name: "${GIT_BRANCH}"]]
+	            	, doGenerateSubmoduleConfigurations: false
+	            	, extensions: [[$class: 'SparseCheckoutPaths', sparseCheckoutPaths: [[path: "/${PROJECT_DIR}"]]]]
+	            	, submoduleCfg: []
+	            	, userRemoteConfigs: [[credentialsId: 'CredentialGitServer', url: "${GIT_URL}"]]])
+	            
+	            script {
+		            dir("./${PROJECT_DIR}/") {
+						POM_FILE = readMavenPom file: 'pom.xml'
+					}
+				}
+			}
+		}
+		stage('Compile and UnitTest') {
+			steps {
+				// Database Cassandra
+				script {
+					if (ENVIRONMENT == 'prod1' || ENVIRONMENT == 'prod2') {
+						CASSANDRA_MEMBER = '172.19.191.219,172.19.190.34,172.19.190.75,172.19.248.74,172.19.248.75,172.19.248.76'
+					}
+					else {
+						CASSANDRA_MEMBER = '172.16.2.138,172.16.2.139,172.16.2.140'
+						CASSANDRA_SET = ENVIRONMENT.replaceAll('uat', '')
+						CASSANDRA_KEYSPACE = CASSANDRA_KEYSPACE + '_' + CASSANDRA_SET
+					}
+				}
+				
+				sh "mvn -Dmaven.test.failure.ignore=false -Dspring.profiles.active=${ENVIRONMENT} -Dcassandra.member=${CASSANDRA_MEMBER} -Dcassandra.port=${CASSANDRA_PORT} -Dcassandra.keyspace=${CASSANDRA_KEYSPACE} -Dcassandra.user=${CASSANDRA_USER} -Dcassandra.pass=${CASSANDRA_PASS} -f ${PROJECT_DIR}/pom.xml clean test"
+			}
+			post {
+		        always {
+		        	dir("./${PROJECT_DIR}/") {
+		     			junit 'target/surefire-reports/*.xml'
+		     		}
+		        }
+		  	}
+		}
+		/*stage('Code Analysis') {
+			steps {
+				withSonarQubeEnv('SonarQubeServer') {
+					script {
+						dir("./${PROJECT_DIR}/") {
+							def SONAR_PROJECT_KEY = "${POM_FILE.groupId}:${POM_FILE.artifactId}:${POM_FILE.version}:${ENVIRONMENT}"
+							def SONAR_PROJECT_NAME = "${POM_FILE.artifactId}:${POM_FILE.version}:${ENVIRONMENT}"
+	    					
+	    					sh "mvn sonar:sonar -Dsonar.junit.reportPaths=target/surefire-reports/ -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/ -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.projectName=${SONAR_PROJECT_NAME}"
+	    				}
+    				}
+				}
+			}
+		}*/
+		stage('Package') {
+			steps {
+				dir("./${PROJECT_DIR}/") {
+					sh "mvn package -DskipTests"
+				}
+			}
+		}
+		stage('Docker Image') {
+			steps {
+				script {
+					dir("./${PROJECT_DIR}/") {
+						def DIST_FILE_NAME = "${POM_FILE.artifactId}-${POM_FILE.version}.${POM_FILE.packaging}"
+						
+						sh "cp ./DockerfileTemplate ./Dockerfile"
+						
+						sh "sed -i 's/{DIST_FILE_NAME}/${DIST_FILE_NAME}/g' Dockerfile"
+						
+						sh "cp ./target/${DIST_FILE_NAME} ./"
+	    				
+	    				sh "docker build -t ${IMAGE_NAME}:${POM_FILE.version} ."
+					}
+				}
+			}
+		}
+		stage('Push to Docker Repo') {
+			steps {
+				withCredentials([usernamePassword(credentialsId: 'CredentialDockerRepoServer', passwordVariable: 'DOCKER_REPO_PASSWORD', usernameVariable: 'DOCKER_REPO_USER_NAME')]) {
+    				sh "docker login --username '${DOCKER_REPO_USER_NAME}' --password '${DOCKER_REPO_PASSWORD}' ${DOCKER_REPO_SERVER}"
+					sh "docker tag ${IMAGE_NAME}:${POM_FILE.version} ${DOCKER_REPO_PATH}${IMAGE_NAME}:${POM_FILE.version}"
+					sh "docker push ${DOCKER_REPO_PATH}${IMAGE_NAME}:${POM_FILE.version}"
+					sh "docker logout ${DOCKER_REPO_SERVER}"
+				}
+			}
+		}
+		stage('Deploy on Kubernetes') {
+			steps {
+				dir("./${PROJECT_DIR}/") {
+					script {
+						sh "cp ./KubernetesDeployment.yml ./KubeDeployment.yml"
+						
+						// Change Kubernete Env.
+						def KUBE_CLUSTER_NAME = 'arctic'
+						def KUBE_CONTEXT_NAME = KUBE_NAMESPACE + '-uat'
+						def KUBE_APPLICATION_NAME = IMAGE_NAME + '-' + ENVIRONMENT
+						
+						if (ENVIRONMENT == 'prod1') {
+							// Site: BNA
+							KUBE_CLUSTER_NAME = 'atlantic'
+							KUBE_CONTEXT_NAME = KUBE_NAMESPACE + '-' + ENVIRONMENT
+							KUBE_APPLICATION_NAME = IMAGE_NAME + '-prod'
+						}
+						else if (ENVIRONMENT == 'prod2') {
+							// Site: SCB
+						   	KUBE_CLUSTER_NAME = 'pacific'
+						   	KUBE_CONTEXT_NAME = KUBE_NAMESPACE + '-' + ENVIRONMENT
+							KUBE_APPLICATION_NAME = IMAGE_NAME + '-prod'
+						}
+						
+						// Replace value in KubeDeployment.yml
+						sh "sed -i 's/{KUBE_CLUSTER_NAME}/${KUBE_CLUSTER_NAME}/g' KubeDeployment.yml"
+						sh "sed -i 's/{KUBE_NAMESPACE}/${KUBE_NAMESPACE}/g' KubeDeployment.yml"
+						sh "sed -i 's/{APPLICATION_NAME}/${KUBE_APPLICATION_NAME}/g' KubeDeployment.yml"
+						sh "sed -i 's/{APPLICATION_PORT_NO}/${KUBE_APPLICATION_PORT_NO}/g' KubeDeployment.yml"
+						sh "sed -i 's/{KUBE_PROBE_URI}/${KUBE_PROBE_URI}/g' KubeDeployment.yml"
+						
+						sh "sed -i 's/{ENVIRONMENT}/${ENVIRONMENT}/g' KubeDeployment.yml"
+						sh "sed -i 's/{CASSANDRA_MEMBER}/${CASSANDRA_MEMBER}/g' KubeDeployment.yml"
+						sh "sed -i 's/{CASSANDRA_PORT}/${CASSANDRA_PORT}/g' KubeDeployment.yml"
+						sh "sed -i 's/{CASSANDRA_KEYSPACE}/${CASSANDRA_KEYSPACE}/g' KubeDeployment.yml"
+						sh "sed -i 's/{CASSANDRA_USER}/${CASSANDRA_USER}/g' KubeDeployment.yml"
+						sh "sed -i 's/{CASSANDRA_PASS}/${CASSANDRA_PASS}/g' KubeDeployment.yml"
+						
+						sh "sed -i 's/{VERSION}/${POM_FILE.version}/g' KubeDeployment.yml"
+						sh "sed -i 's/{TIER}/${KUBE_TIER}/g' KubeDeployment.yml"
+						sh "sed -i 's/{NO_OF_REPLICAS}/${KUBE_NO_OF_REPLICAS}/g' KubeDeployment.yml"
+						sh "sed -i 's/{IMAGE_NAME}/${IMAGE_NAME}/g' KubeDeployment.yml"
+						sh "sed -i 's/{IMAGE_TAG}/${POM_FILE.version}/g' KubeDeployment.yml"
+						
+						def CURRENT_DATE_TIME = sh (script: "date '+%Y.%m.%d.%H.%M.%S'", returnStdout: true).trim()
+						sh "sed -i 's/{DEPLOYMENT_DATE}/${CURRENT_DATE_TIME}/g' KubeDeployment.yml"
+						
+						sh "kubectl config use-context ${KUBE_CONTEXT_NAME}"
+						sh "kubectl apply -f KubeDeployment.yml -n ${KUBE_NAMESPACE}"
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,7 @@
+FROM openjdk8/alpine:3.15
+
+RUN mkdir -p /program
+
+COPY {DIST_FILE_NAME} /program/
+
+CMD ["/usr/bin/java", "-XX:+UseContainerSupport", "-XX:InitialRAMPercentage=50.00", "-XX:MaxRAMPercentage=85.00", "-jar", "/program/{DIST_FILE_NAME}"]

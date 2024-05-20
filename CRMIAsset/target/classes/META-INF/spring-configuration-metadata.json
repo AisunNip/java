@@ -1,0 +1,30 @@
+{
+  "groups": [
+    {
+      "name": "spring.cklist",
+      "type": "javax.sql.DataSource",
+      "sourceType": "th.co.truecorp.crmdev.asset.dao.DataSourceConfiguration",
+      "sourceMethod": "public javax.sql.DataSource cklistDS() "
+    },
+    {
+      "name": "spring.dcrmbatchrecds",
+      "type": "javax.sql.DataSource",
+      "sourceType": "th.co.truecorp.crmdev.asset.dao.DataSourceConfiguration",
+      "sourceMethod": "public javax.sql.DataSource dcrmbatchrecDS() "
+    },
+    {
+      "name": "spring.dcrmds",
+      "type": "javax.sql.DataSource",
+      "sourceType": "th.co.truecorp.crmdev.asset.dao.DataSourceConfiguration",
+      "sourceMethod": "public javax.sql.DataSource dcrmDS() "
+    },
+    {
+      "name": "spring.olcrm",
+      "type": "javax.sql.DataSource",
+      "sourceType": "th.co.truecorp.crmdev.asset.dao.DataSourceConfiguration",
+      "sourceMethod": "public javax.sql.DataSource olcrmDS() "
+    }
+  ],
+  "properties": [],
+  "hints": []
+}
